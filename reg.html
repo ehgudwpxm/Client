@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <title>등록</title>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+        <script>
+            const handleReg = () =>{
+                //CLASS나 NAME은 무조건 배열형식으로 가져와야한다.
+                const lan = document.getElementsByName('lan')[0].value
+                const msg = document.getElementsByName('msg')[0].value
+    
+                console.log(lan, msg)
+                axios.post('http://localhost:3000/Reg',{lan:lan, msg:msg})
+                .then(result=>{
+                    if(result.data==='OK'){
+                        document.getElementById('reg_msg').innerHTML = '登録しました。'
+                    }
+                })
+            }
+
+            const init = () =>{
+                console.log(location.search)
+            }
+           
+    
+    
+        </script>
+    </head>
+    
+
+    <body onload="init();">
+
+        言語:<input type="text" name="lan">
+        메시지:<input type="text" name="msg">
+
+        <div id="reg_msg"></div>
+        <input type="button" value="등록" onclick="handleReg();">
+        <input type="button" value="home" onclick="location.href='Myclient.html'">
+        <input type="button" value="삭제">
+    </body>
+
+
+</html>

@@ -1,0 +1,95 @@
+<html>
+    <head>
+        <title>Update</title>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
+            const init = () => {
+                axios.get('http:localhost:3000/language_all')
+                .then(result=>{
+                    const del = document.getElementById('del') 
+                    const select = document.createElement('select')
+                    select.id = 'mod_select'
+                    select.addEventListener('change',(event)=>{
+                        console.log(event.target.value)
+                        const selectedItem = event.target.value
+                        axios.get('http:localhost:3000/language/'+selectedItem)
+                        .then(result =>{
+                            const text = document.getElementsByName('text')
+                            text[0].value = result.data[0].language
+                            text[1].value = result.data[0].msg
+
+                            console.log(text)
+                            console.log(result.data)
+                        })
+                    })
+
+                    
+                    const option = document.createElement('option')
+                    option.innerHTML = '언어를 선택해주세요'
+                    option.hidden = true
+                    select.appendChild(option)
+                    
+
+
+                    result.data.map(c => {
+                        const option = document.createElement('option')
+                        option.innerHTML = c.language
+                        select.appendChild(option)
+
+
+                    })
+                    
+                    del.appendChild(select)
+
+                    //console.log(select, option)
+
+
+
+                    //console.log(result.data)
+                })
+
+
+
+            }
+
+            const handleMod = () => {
+                const lan_mod = document.getElementById('mod_select').value
+                console.log('기존값',lan_mod)
+                
+                const msg = document.getElementsByName('text')[1].value
+                console.log('바뀐값',msg)
+
+                const lan = document.getElementsByName('text')[0].value
+                console.log('바뀐값',lan)
+                
+                console.log(lan, msg)
+
+                axios.post('http:localhost:3000/mod',{lan:lan, msg:msg, lan_mod:lan_mod})
+                .then(result =>{
+                   
+                   console.log(result.data)
+                   //init(); redirect
+                
+                   alert('수정되었습니다.')
+                   location.href = 'Myclient.html'
+                })
+
+
+            }
+
+
+
+        </script>
+    </head>
+    <body onload="init();">
+        <div id="del">
+            <div id="mod_msg"></div>
+            言語：<input type="text" name="text">
+            メッセージ：<input type="text" name="text">
+            <input type="button" value="수정" onclick="handleMod();">
+            <input type="button" value="home" onclick="location.href='Myclient.html'">
+        </div>
+    </body>
+
+
+</html>

@@ -1,0 +1,100 @@
+<html>
+    <head>
+        <title>hello</title>
+        <link rel="stylesheet" href="./style.css">
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+        <script>
+            function krMessage(word, msg){
+             
+                //let msg = ""
+                const fixed = "fixed permenatntey"
+
+                //axios.get('http://localhost:3000/language/'+word)
+                axios.post('http://localhost:3000/language/',{lan:word, msg:msg})
+                .then((result)=>{
+                    document.getElementById('msg').innerHTML = result.data
+                    document.getElementById('msg2').innerHTML = result.data
+                    console.log('data was sent successfully')
+                    
+
+                })
+                
+
+
+            }
+
+            //id는 하나만 있어야 한다 클래스는 여러가지 있어도 된다.
+            // class는 . ID는 #
+
+            function init(){
+
+                axios.get('http://localhost:3000/language_all/')
+                .then(result =>{
+                    console.log(result.data)
+                    const lan_box = document.getElementById('language-box')
+
+                    //loop
+                    result.data.map(c=>{
+                        console.log(c)
+                        const input = document.createElement('input')
+                        input.type = 'button'
+                        input.value = c.language
+                        input.addEventListener('click',()=>{
+                            krMessage(c.language, c.msg)
+
+
+                        })
+                        lan_box.appendChild(input)
+
+
+                    })
+                    
+                    
+                })
+                
+           
+
+            }
+
+            // function gotoReg(){
+            //     location.href = 'reg.html'
+            // }
+            
+            //요즘엔 화살표문법이 대세 펑션대신
+            const gotoReg = ()=>{
+
+                //location.href = 'reg.html'
+
+
+                //화면간 파라미터넘기
+                const a = 1
+                const b = 2
+                location.href = 'reg.html?a='+a+'&b='+b
+            }
+            const del = () => {
+                location.href = 'del.html'
+            }
+
+            const goUpdate = () => {
+                location.href = 'Update.html'
+            }
+
+        </script>
+
+    </head>
+    <body onload="init();">
+        <div id="language-box">
+            <div id="msg" class="msgclass">Select Language</div>
+            <div id="msg2" class="msgclass">seconds</div>
+            <input type="button" value="등록" onclick="gotoReg();">
+            <input type="button" value="수정" onclick="goUpdate();">
+            <input type="button" value="삭제" onclick="del();">
+        </div>
+    </body>
+</html>
+
+
+
+
+
